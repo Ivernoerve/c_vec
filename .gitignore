@@ -1,0 +1,11 @@
+*~
+.*~
+.DS_Store
+.Rhistory
+.RData
+test.py
+test.c
+
+venv/
+__pycache__/
+public/
