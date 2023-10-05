@@ -8,7 +8,7 @@ INCLUDE_DIR=include
 SRC_DIR=src
 
 
-TEST_SRC= test.c common.c $(MATRIX_SRC)
+TEST_SRC= test.c $(MATRIX_SRC)
 
 TEST_SRC:=$(patsubst %.c,$(SRC_DIR)/%.c, $(TEST_SRC))
 

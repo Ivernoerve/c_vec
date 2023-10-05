@@ -7,7 +7,7 @@ Support for creating a marrix from csv is implemented.
 
 
 ## Supported math operations:
---
+
 * Matrix transposing
 * All four elementary elementwise operations. 
 	* Addition
@@ -18,7 +18,7 @@ Support for creating a marrix from csv is implemented.
 
 
 ## TODO 
---
+
 
 Create a set rule for whether operations should be inplace or should return new matrix structs.
 

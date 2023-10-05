@@ -8,6 +8,9 @@
 struct matrix;
 typedef struct matrix mat_t;
 
+
+typedef double (elementwise_operator)(double, double);
+
 /*
  * Creates a new matrix with the given row and column size i, j.
 

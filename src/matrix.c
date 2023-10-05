@@ -4,7 +4,7 @@
 
 #include "matrix.h"
 #include "printing.h"
-#include "common.h"
+//#include "common.h"
 
 struct matrix;
 typedef struct matrix mat_t;
