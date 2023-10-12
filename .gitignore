@@ -9,3 +9,7 @@ test.c
 venv/
 __pycache__/
 public/
+
+logistic_regression.c
+data.csv
+labels.csv
