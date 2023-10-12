@@ -6,6 +6,7 @@
 #include "printing.h"
 
 #include <math.h>
+#include <stdarg.h>
 
 struct matrix;
 typedef struct matrix mat_t;
@@ -139,16 +140,16 @@ mat_t *matrix_apply_func(mat_t *matrix, apply_operator func, int inplace){
 	i = matrix -> i;
 	j = matrix -> j;
 	if (inplace == 1){
-		arr_ptr = matrix -> mat_arr;
+		res_matrix = matrix;
 	}
 	else if (inplace == 0){
 		
 		res_matrix = matrix_create(i, j);
-		arr_ptr = res_matrix -> mat_arr;
 	}
 	else{
 		ERROR_PRINT("Arg {inplace} should be boolean 1, 0 for true false respectively.");
 	}
+	arr_ptr = res_matrix -> mat_arr;
 
 	int n, m;
 	for (n=0; n < i; n++){
@@ -431,3 +432,110 @@ int matrix_equal(mat_t *matrix1, mat_t *matrix2, double tol){
  *
 */
 
+
+/*
+ *
+ *
+ *BEGIN stacking functions
+ *
+ *
+*/
+
+mat_t *matrix_hstack(int num_matrices, ...){
+	va_list valist, copy_valist;
+	va_start(valist, num_matrices);
+	va_copy(copy_valist, valist);
+
+	int i, j;
+	int n, m, k, m_count;
+	mat_t *res_matrix, *curr_matrix;
+
+	curr_matrix = va_arg(valist, mat_t *);
+	i = curr_matrix -> i;
+	j = curr_matrix -> j;
+
+	for (n=1; n<num_matrices; n++){
+		curr_matrix = va_arg(valist, mat_t *);
+		j += curr_matrix -> j;
+		if (i != curr_matrix -> i){	
+			ERROR_PRINT("Dimension 0 (i) does not match for the given matrices %d != %d between matrix %d, %d", i, curr_matrix->i, n, n+1);
+		}
+	}
+
+	res_matrix = matrix_create(i, j);
+	m_count = 0;
+	for (k=0; k<num_matrices; k++){
+		curr_matrix = va_arg(copy_valist, mat_t *);
+
+		matrix_print(curr_matrix);
+		i = curr_matrix -> i;
+		j = curr_matrix -> j;
+		for (n=0; n < i; n++){
+			for (m=0; m < j; m++){
+				res_matrix -> mat_arr[n][m+m_count] = curr_matrix -> mat_arr[n][m];
+			}
+			
+		}
+		m_count += m;
+		printf("\nm_count: %d\n", m_count);
+	}
+	matrix_print(res_matrix);
+	matrix_destroy(res_matrix);
+	va_end(valist);
+  	va_end(copy_valist);
+	return res_matrix;
+}
+
+
+
+mat_t *matrix_vstack(int num_matrices, ...){
+	va_list valist, copy_valist;
+	va_start(valist, num_matrices);
+	va_copy(copy_valist, valist);
+
+	int i, j;
+	int n, m, k, n_count;
+	mat_t *res_matrix, *curr_matrix;
+
+	curr_matrix = va_arg(valist, mat_t *);
+	i = curr_matrix -> i;
+	j = curr_matrix -> j;
+
+	for (n=1; n<num_matrices; n++){
+		curr_matrix = va_arg(valist, mat_t *);
+		i += curr_matrix -> i;
+		if (j != curr_matrix -> j){	
+			ERROR_PRINT("Dimension j (j) does not match for the given matrices %d != %d between matrix %d, %d", j, curr_matrix->j, n, n+1);
+		}
+	}
+
+	res_matrix = matrix_create(i, j);
+	n_count = 0;
+	for (k=0; k<num_matrices; k++){
+		curr_matrix = va_arg(copy_valist, mat_t *);
+
+		matrix_print(curr_matrix);
+		i = curr_matrix -> i;
+		j = curr_matrix -> j;
+		for (n=0; n < i; n++){
+			for (m=0; m < j; m++){
+				res_matrix -> mat_arr[n+n_count][m] = curr_matrix -> mat_arr[n][m];
+			}
+			
+		}
+		n_count += n;
+	}
+	matrix_print(res_matrix);
+	matrix_destroy(res_matrix);
+	va_end(valist);
+  	va_end(copy_valist);
+	return res_matrix;
+}
+
+/*
+ *
+ *
+ *END stacking functions
+ *
+ *
+*/

@@ -55,6 +55,11 @@ int matrix_equal(mat_t *matrix1, mat_t *matrix2, double tol);
 mat_t *matrix_elementwise_equal(mat_t *matrix1, mat_t *matrix2, double tol);
 
 
+mat_t *matrix_hstack(int num_matrices, ...);
+
+mat_t *matrix_vstack(int num_matrices, ...);
+
+
 mat_t *read_matrix_from_csv(char *path);
 
 #endif
