@@ -396,7 +396,7 @@ mat_t *matrix_elementwise_equal(mat_t *matrix1, mat_t *matrix2, double tol){
 }
 
 
-int *matrix_equal(mat_t *matrix1, mat_t *matrix2, double tol){
+int matrix_equal(mat_t *matrix1, mat_t *matrix2, double tol){
 	if (matrix1 -> i != matrix2 -> i){	
 		ERROR_PRINT("Dimension 0 (i) does not match for the given matrices %d != %d", matrix1->i, matrix2->i);
 	}

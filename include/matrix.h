@@ -50,7 +50,7 @@ mat_t *matrix_multiplication(mat_t *matrix1, mat_t *matrix2);
 
 double matrix_sum(mat_t *matrix);
 
-int *matrix_equal(mat_t *matrix1, mat_t *matrix2, double tol);
+int matrix_equal(mat_t *matrix1, mat_t *matrix2, double tol);
 
 mat_t *matrix_elementwise_equal(mat_t *matrix1, mat_t *matrix2, double tol);
 
