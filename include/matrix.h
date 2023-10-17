@@ -34,7 +34,7 @@ int get_matrix_axis_size(mat_t *matrix, int axis);
 void matrix_print(mat_t *matrix);
 
 
-mat_t *matrix_transpose(mat_t *matrix);
+mat_t *matrix_transpose(mat_t *matrix, int inplace);
 
 mat_t *matrix_apply_func(mat_t *matrix, apply_operator func, int inplace);
 
@@ -49,6 +49,8 @@ mat_t *matrix_elementwise_division(mat_t *matrix1, mat_t *matrix2, int inplace);
 mat_t *matrix_multiplication(mat_t *matrix1, mat_t *matrix2); 
 
 double matrix_sum(mat_t *matrix);
+
+mat_t *matrix_axis_sum(mat_t *matrix, int axis);
 
 int matrix_equal(mat_t *matrix1, mat_t *matrix2, double tol);
 

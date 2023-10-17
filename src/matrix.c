@@ -101,9 +101,9 @@ void matrix_print(mat_t *matrix){
 }
 
 
-mat_t *matrix_transpose(mat_t *matrix){
+mat_t *matrix_transpose(mat_t *matrix, int inplace){
 
-	if (matrix -> transposed != NULL && matrix -> has_changed == 0)
+	if (matrix -> transposed != NULL && !(matrix -> has_changed) && inplace)
 		return matrix -> transposed;
 
 	int i, j;
@@ -125,8 +125,11 @@ mat_t *matrix_transpose(mat_t *matrix){
 			t_row[n] = org_row[m];
 		}
 	}
-	matrix -> transposed = transposed_matrix;
-	matrix -> has_changed = 0;
+	if (inplace){
+		matrix -> transposed = transposed_matrix;
+		matrix -> has_changed = 0;
+	}
+	
 	return transposed_matrix;
 }
 
@@ -141,6 +144,7 @@ mat_t *matrix_apply_func(mat_t *matrix, apply_operator func, int inplace){
 	j = matrix -> j;
 	if (inplace == 1){
 		res_matrix = matrix;
+		res_matrix -> has_changed = 1;
 	}
 	else if (inplace == 0){
 		
@@ -159,7 +163,6 @@ mat_t *matrix_apply_func(mat_t *matrix, apply_operator func, int inplace){
 		}
 	}
 
-	res_matrix -> has_changed = 1;
 	return res_matrix;
 }
 
@@ -234,6 +237,7 @@ static mat_t *elementwise_wrapper(mat_t *matrix1, mat_t *matrix2, elementwise_op
 
 	if (inplace == 1){
 		res_matrix =  matrix1;
+		res_matrix -> has_changed = 1;
 	}
 	else if (inplace == 0){
 		res_matrix = matrix_create(i, j);
@@ -255,7 +259,7 @@ static mat_t *elementwise_wrapper(mat_t *matrix1, mat_t *matrix2, elementwise_op
 			arr_ptr[n][m] = func(elem1, elem2);
 		}
 	}
-	res_matrix -> has_changed = 1;
+	
 	return res_matrix;
 }
 
@@ -333,7 +337,6 @@ mat_t *matrix_multiplication(mat_t *matrix1, mat_t *matrix2){
 			res_matrix -> mat_arr[n][m] = val;
 		}	
 	}
-	res_matrix -> has_changed = 1;
 	return res_matrix;
 }
 
@@ -355,6 +358,43 @@ double matrix_sum(mat_t *matrix){
 	}
 	return sum;
 }
+
+
+mat_t *matrix_axis_sum(mat_t *matrix, int axis){
+	mat_t *res_matrix;
+
+	if (axis == 0)
+		res_matrix = matrix_create(matrix -> i, 1);
+	else if (axis == 1)
+		res_matrix = matrix_create(1, matrix -> j);
+	else 
+		ERROR_PRINT("Axis %d is out of bound, spessify axis 0 for dim i, axis 1 for dim j", axis);
+	int i1, i2, j2;
+	
+
+	i1 = matrix -> i;
+	i2 = res_matrix -> i;
+	j2 = res_matrix -> j;
+
+
+	int n, m, s;
+	double *row_m1;
+	double val;
+	for (n=0; n < i1; n++){
+		
+		row_m1 = matrix -> mat_arr[n];
+
+		for (m=0; m < j2; m++){
+			val = 0;
+			for (s=0; s < i2; s++){
+				val += row_m1[s];
+			}	
+			res_matrix -> mat_arr[n][m] = val;
+		}	
+	}
+	return res_matrix;
+}
+
 
 
 /*
@@ -539,3 +579,5 @@ mat_t *matrix_vstack(int num_matrices, ...){
  *
  *
 */
+
+

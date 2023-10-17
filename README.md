@@ -15,7 +15,22 @@ Support for creating a marrix from csv is implemented.
 	* Multiplication
 	* Division
 * Matrix multiplication
+* Sum
 
+
+## Supported Logical operations:
+
+* Global equality test
+	* Tests global equality between two matrices returns true, false
+* Elementwise equality
+	* Tests equality elementwise returns matrix with 1, 0 for equal, not equal elements. 
+
+## Supported restructuring operations
+
+* vstacking
+	* Stacking two matrices along the 0th dimension (rows)
+* hstacking
+	* Stacking two matrices along the 1st dimension (collumns)
 
 ## TODO 
 
@@ -26,4 +41,3 @@ Improve structuring of the matrix transpose to keep track of the transposes of m
 
 Implement more operations such as total_sum, row_sum and col_sum.
 
-Implement a wrapper function that allows for alteration of elements in a matrix with operations such as exponentials.
